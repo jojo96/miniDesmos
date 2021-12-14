@@ -1,0 +1,7 @@
+pillow
+numpy
+matplotlib
+colour
+opencv-python
+random
+numpy
