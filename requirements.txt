@@ -2,5 +2,5 @@ pillow
 numpy
 matplotlib
 colour
-opencv-python
+opencv-python-headless
 numpy
