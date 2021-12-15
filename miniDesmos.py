@@ -86,7 +86,7 @@ if st.button('Plot Pokemon'):
         st.image(image, caption = 'Abra plot')
         st.write('Equations used to plot Abra (Showing only first 20 here)')
         
-        img = cv.imread(r"https://github.com/jojo96/miniDesmos/blob/main/images/abra.jpg")
+        img = cv.imread(r"abra.jpg")
         img = cv.flip(img, 0)
         imgray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
         edged = cv.Canny(imgray, 40, 200)
