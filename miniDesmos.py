@@ -23,12 +23,12 @@ choose = st.sidebar.selectbox("Select your Pokemon:", Options)
 
 if st.button('Plot Pokemon'):
     if choose == 'Rayquaza':
-        image = Image.open(r'ray_.png')
+        image = Image.open(r'images\ray_.png')
         st.image(image, caption = 'Rayquaza plot')
         
         st.write('Equations used to plot Rayquaza (Showing only first 20 here)')
         
-        img = cv.imread(r"ray.png")
+        img = cv.imread(r"images\ray.png")
         img = cv.flip(img, 0)
         imgray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
         edged = cv.Canny(imgray, 40, 200)
@@ -82,11 +82,11 @@ if st.button('Plot Pokemon'):
 
 
     if choose == 'Abra':
-        image = Image.open(r'abra_.png')
+        image = Image.open(r'images\abra_.png')
         st.image(image, caption = 'Abra plot')
         st.write('Equations used to plot Abra (Showing only first 20 here)')
         
-        img = cv.imread(r"abra.jpg")
+        img = cv.imread(r"images\abra.jpg")
         img = cv.flip(img, 0)
         imgray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
         edged = cv.Canny(imgray, 40, 200)
