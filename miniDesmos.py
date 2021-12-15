@@ -28,7 +28,7 @@ if st.button('Plot Pokemon'):
         
         st.write('Equations used to plot Rayquaza (Showing only first 20 here)')
         
-        img = cv.imread(r"images\ray.png")
+        img = cv.imread(r".\images\ray.png")
         img = cv.flip(img, 0)
         imgray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
         edged = cv.Canny(imgray, 40, 200)
