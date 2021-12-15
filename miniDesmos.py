@@ -145,3 +145,82 @@ st.write('I had created some graphs before :) [Roger Federer](https://www.desmos
 st.write('For creating these graphs, I had used simple tools mostly like ellipses, parabolas, circles, and straight lines. Believe me! It is a lot of fun. But, it takes a lot of time too.')
 st.write('So, I was thinking of automating it for a long time. I came across this inspirational video on Youtube that is a full fledged Desmos graph generator which uses Bezier curves to produce amazing Graphics. The video: [How I animate stuff on Desmos Graphing Calculator](https://www.youtube.com/watch?v=BQvBq3K50u8). You can see the equations on the left and the plots as well')
 st.write('For this project, I am aiming for something simple though. I want to plot an image just using straight lines and produce those equations which can be imported into desmos. The code is explained in my medium article. Thank you for visiting :wave:')
+
+st.header('Upload your own image to get a plot')
+uploaded_file = st.file_uploader("Upload Image")
+if st.button('Upload'):
+    img = Image.open(uploaded_file)
+    st.image(img, caption='Input image')
+    st.header('Plotting:')
+    img = np.array(img)
+    
+    img = cv.flip(img, 0)
+    imgray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+    edged = cv.Canny(imgray, 40, 200)
+    ret, thresh = cv.threshold(edged, 50, 255, 0)
+    contours, hierarchy = cv.findContours(thresh, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    r = cv.drawContours(img, contours, -1, (0,255,0), 3)
+    
+    res = []
+    s = 0
+    for i in contours:
+        if len(i)>3:
+            res.append(i)
+            s+=len(i)
+    r = cv.drawContours(img, res, -1, (0,255,0), 3)
+    
+    def chunks(lst, n):
+        """Yield successive n-sized chunks from lst."""
+        for i in range(0, len(lst), n):
+            yield lst[i:i + n]
+    
+    
+    strs = []
+    pts = []
+    mb = []
+    for ele in res:
+        x = []
+        y = []
+        for k in ele:
+            x.append(k[0][0])
+            y.append(k[0][1])
+        if len(x)%2 == 1:
+            x.pop()
+        if len(y)%2 == 1:
+            y.pop() 
+        g = list(chunks(x,2))
+        h = list(chunks(y,2))
+        pts.append(tuple(x))
+        pts.append(tuple(y))
+        pts.append(random.choice(['r','g','b']))
+        #pts.append
+        for i in range(len(g)):
+            try:
+                m, b = np.polyfit(g[i], h[i], 1)
+                stk = 'y ='+str(m)+'*x+'+str(b)+'{'+str(min(h[i]))+'<y<'+str(max(h[i]))+'}'+'{'+str(min(g[i]))+'<x<'+str(max(g[i]))+'}'
+                strs.append(stk)
+                mb.append([m, b, min(g[i]), max(g[i])])
+            except:
+                continue
+                
+    img = [] # some array of images
+    frames = [] # for storing the generated images            
+    fig = plt.figure(figsize=(10, 10))   
+    
+    for i in range(len(mb)):
+          
+        x = np.linspace(mb[i][2],mb[i][3],10)
+        y = mb[i][0]*x+mb[i][1]
+        plt.plot(x, y, random.choice(['r','g','b']))
+        
+        plt.grid()
+        frames.append(fig)
+    
+    st.write(frames[len(mb)-1])
+        
+        
+    #ani = animation.ArtistAnimation(fig, frames, interval=50, blit=True,
+    #                        repeat_delay=1000)    
+    #st.write(ani)            
+    st.write('Equations that produced the plot:')            
+    st.write(strs[:20]) 
