@@ -26,6 +26,57 @@ if st.button('Plot Pokemon'):
         image = Image.open(r'ray_.png')
         st.image(image, caption = 'Rayquaza plot')
         st.write('Equations used to plot Rayquaza (Showing only first 20 here)')
+        
+        img = cv.imread(r"ray.png")
+        img = cv.flip(img, 0)
+        imgray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+        edged = cv.Canny(imgray, 40, 200)
+        ret, thresh = cv.threshold(edged, 50, 255, 0)
+        contours, hierarchy = cv.findContours(thresh, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+        r = cv.drawContours(img, contours, -1, (0,255,0), 3)
+
+        res = []
+        s = 0
+        for i in contours:
+            if len(i)>3:
+                res.append(i)
+                s+=len(i)
+        r = cv.drawContours(img, res, -1, (0,255,0), 3)
+
+        def chunks(lst, n):
+            """Yield successive n-sized chunks from lst."""
+            for i in range(0, len(lst), n):
+                yield lst[i:i + n]
+
+
+        strs = []
+        pts = []
+        mb = []
+        for ele in res:
+            x = []
+            y = []
+            for k in ele:
+                x.append(k[0][0])
+                y.append(k[0][1])
+            if len(x)%2 == 1:
+                x.pop()
+            if len(y)%2 == 1:
+                y.pop() 
+            g = list(chunks(x,2))
+            h = list(chunks(y,2))
+            pts.append(tuple(x))
+            pts.append(tuple(y))
+            pts.append(random.choice(['r','g','b']))
+            #pts.append
+            for i in range(len(g)):
+                try:
+                    m, b = np.polyfit(g[i], h[i], 1)
+                    stk = 'y ='+str(m)+'*x+'+str(b)+'{'+str(min(h[i]))+'<y<'+str(max(h[i]))+'}'+'{'+str(min(g[i]))+'<x<'+str(max(g[i]))+'}'
+                    strs.append(stk)
+                    mb.append([m, b, min(g[i]), max(g[i])])
+                except:
+                    continue
+
         st.write(strs[:20]) 
 
 
@@ -33,6 +84,56 @@ if st.button('Plot Pokemon'):
         image = Image.open(r'abra_.png')
         st.image(image, caption = 'Abra plot')
         st.write('Equations used to plot Abra (Showing only first 20 here)')
+        img = cv.imread(r"abra.jpg")
+        img = cv.flip(img, 0)
+        imgray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+        edged = cv.Canny(imgray, 40, 200)
+        ret, thresh = cv.threshold(edged, 50, 255, 0)
+        contours, hierarchy = cv.findContours(thresh, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+        r = cv.drawContours(img, contours, -1, (0,255,0), 3)
+
+        res = []
+        s = 0
+        for i in contours:
+            if len(i)>3:
+                res.append(i)
+                s+=len(i)
+        r = cv.drawContours(img, res, -1, (0,255,0), 3)
+
+        def chunks(lst, n):
+            """Yield successive n-sized chunks from lst."""
+            for i in range(0, len(lst), n):
+                yield lst[i:i + n]
+
+
+        strs = []
+        pts = []
+        mb = []
+        for ele in res:
+            x = []
+            y = []
+            for k in ele:
+                x.append(k[0][0])
+                y.append(k[0][1])
+            if len(x)%2 == 1:
+                x.pop()
+            if len(y)%2 == 1:
+                y.pop() 
+            g = list(chunks(x,2))
+            h = list(chunks(y,2))
+            pts.append(tuple(x))
+            pts.append(tuple(y))
+            pts.append(random.choice(['r','g','b']))
+            #pts.append
+            for i in range(len(g)):
+                try:
+                    m, b = np.polyfit(g[i], h[i], 1)
+                    stk = 'y ='+str(m)+'*x+'+str(b)+'{'+str(min(h[i]))+'<y<'+str(max(h[i]))+'}'+'{'+str(min(g[i]))+'<x<'+str(max(g[i]))+'}'
+                    strs.append(stk)
+                    mb.append([m, b, min(g[i]), max(g[i])])
+                except:
+                    continue
+
         st.write(strs[:20]) 
         
 
