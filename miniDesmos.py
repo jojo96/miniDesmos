@@ -145,7 +145,7 @@ st.write('So, I was thinking of automating it for a long time. I came across thi
 st.write('For this project, I am aiming for something simple though. I want to plot an image just using straight lines and produce those equations which can be imported into desmos. The code is explained in my medium article. Thank you for visiting :wave:')
 
 st.header('Upload your own image to get a plot')
-uploaded_file = st.file_uploader("Upload Image. Please upload an image that's not very big, probably less than 100 KBs")
+uploaded_file = st.file_uploader("Upload Image. Please upload an image that's not very big (probably less than 100 KBs)")
 if st.button('Upload'):
     img = Image.open(uploaded_file)
     st.image(img, caption='Input image')
